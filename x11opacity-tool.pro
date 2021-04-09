@@ -47,8 +47,12 @@ desktop.files = $$PWD/install/x11opacity-tool.desktop
 
 other.path=/opt/durapps/x11opacity-tool
 other.files= $$PWD/install/*
+<<<<<<< HEAD
 
 !isEmpty(target.path): INSTALLS += target desktop other
+=======
+!isEmpty(target.path): INSTALLS += target
+>>>>>>> master
 
 INSTALLS +=
 RESOURCES += \
