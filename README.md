@@ -6,7 +6,7 @@ send emails liuminghang0821@gmail.com
 #### Linux build-dep
 sudo apt install qt5-qmake qtbase5-dev qttools5-dev-tools libxcb-ewmh-dev libqt5x11extras5-dev libx11-xcb-dev
 
-sudo apt install pkg-config, dpkg-dev,
+sudo apt install pkg-config, dpkg-dev
 #### Linux build 
 mkdir build
 cd build
