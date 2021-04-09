@@ -12,6 +12,7 @@
 #include <QCoreApplication>
 #include <QApplication>
 #include <QCloseEvent>
+#include <QDesktopWidget>
 
 #define App (static_cast<QApplication*>(QCoreApplication::instance()))
 MainWindow::MainWindow(QWidget *parent) :
@@ -28,7 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
         setAllWindows();
     });
 
-
+    this->setMaximumSize(600, 150);
+    this->move(App->desktop()->screen()->rect().center() - this->rect().center());
     m_eventThread = QThread::create([ = ]() {
         Display *display;
         Window rootwin;
