@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusBar->showMessage("https://github.com/dependon/x11opacitytool");
 //    initTray();
     initXcb();
-    QTimer::singleShot(400, [ = ] {
+    QTimer::singleShot(100, [ = ] {
         setAllWindows();
     });
 
@@ -118,23 +118,29 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::setAllWindows()
 {
+    qDebug() << "xxx1";
     char *str = NULL;
     QByteArray ba = "";
     str = (char *)malloc(ba.length() + 1);
     memset(str, 0, ba.length());
     memcpy(str, ba.data(), ba.length());
+    qDebug() << "xxxx2";
     str[ba.length()] = '\0';
     //设置desktop透明
     int pid_t[128];
     find_pid_by_name(str, pid_t);
     int pid = pid_t[0];
+
+    qDebug() << "xxxx3";
     Display *display = XOpenDisplay(0);
     WindowsMatchingPid match(display, XDefaultRootWindow(display), pid);
 //    const list<Window> &result = match.result();
     const list<Window> &allresult = match.Allresult();
+    qDebug() << "xxxx4";
     for (Window id : allresult) {
         QWindow *window = QWindow::fromWinId((unsigned long)id);
         uint32_t indexId = searchWindowType(id) ;
+        qDebug() << indexId;
         if (window != nullptr && m_myId != id
                 && (indexId == 381 || indexId == 377 || indexId == 371
                     || indexId == 376 || indexId == 192266373)) {
@@ -181,19 +187,37 @@ void MainWindow::searchAllWindowType()
 
 uint32_t MainWindow::searchWindowType(int wid)
 {
+    uint32_t reId = 0;
     QMutexLocker locker(&m_mutex);
     if (m_cookie) {
 
         xcb_get_property_cookie_t cooke = xcb_ewmh_get_wm_window_type(&m_ewmh_connection, wid);
 
         xcb_ewmh_get_atoms_reply_t name;
-        xcb_ewmh_get_wm_window_type_reply(&m_ewmh_connection, cooke, &name, NULL);
+        xcb_generic_error_t *error_t = new xcb_generic_error_t;
+//        xcb_ewmh_get_wm_window_type_reply(&m_ewmh_connection, cooke, &name, NULL);
+        xcb_ewmh_get_wm_window_type_reply(&m_ewmh_connection, cooke, &name, &error_t);
+        qDebug() << "ssss";
+        if (error_t) {
+            qDebug() << error_t->response_type;
+            qDebug() << error_t->error_code;
+            qDebug() << error_t->sequence;
+            qDebug() << error_t->resource_id;
+            qDebug() << error_t->minor_code;
+            qDebug() << error_t->major_code;
+            delete error_t;
+            error_t = NULL;
+            return 0;
+        } else {
+
+        }
+        qDebug() << "eeee";
         if (name.atoms) {
-            return  name.atoms[0];
+            reId = name.atoms[0];
         }
 
     }
-    return 0;
+    return reId;
 }
 
 void MainWindow::quitApp()
