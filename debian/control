@@ -1,0 +1,12 @@
+Source: x11opacity-tool
+Section: utils
+Priority: optional
+Maintainer: liuminghang <liuminghang0821@gmail.com>
+Build-Depends: debhelper (>= 9),pkg-config, dpkg-dev, qt5-qmake, qtbase5-dev, qttools5-dev-tools , libxcb-ewmh-dev , libqt5x11extras5-dev ,libx11-xcb-dev
+Standards-Version: 0.0-3
+Homepage: https://github.com/dependon/x11opacitytool
+
+Package: x11opacity-tool
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: x11 window set opacity tool.
