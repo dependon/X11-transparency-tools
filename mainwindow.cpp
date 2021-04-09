@@ -53,7 +53,8 @@ MainWindow::MainWindow(QWidget *parent) :
                 qDebug() << indexId;
                 if (window != nullptr && m_myId != id
                         && (indexId == 381 || indexId == 377 || indexId == 371
-                            || indexId == 376 || indexId == 192266373)) {
+                            || indexId == 376 || indexId == 192266373 ||
+                            indexId == 10809947 || indexId == 344672356)) {
 
                     int value = ui->opacitySlider->value();
                     double a = (double)value;
@@ -209,12 +210,12 @@ uint32_t MainWindow::searchWindowType(int wid)
             qDebug() << error_t->major_code;
             delete error_t;
             error_t = NULL;
-            return 0;
+            return 381;
         } else {
 
         }
         qDebug() << "eeee";
-        if (name.atoms) {
+        if (name.atoms && name.atoms_len == 1) {
             reId = name.atoms[0];
         }
 
