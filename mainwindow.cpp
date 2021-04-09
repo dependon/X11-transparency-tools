@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusBar->showMessage("https://github.com/dependon/x11opacitytool");
 //    initTray();
     initXcb();
-    QTimer::singleShot(100, [ = ] {
+    QTimer::singleShot(400, [ = ] {
         setAllWindows();
     });
 
