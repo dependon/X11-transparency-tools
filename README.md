@@ -15,5 +15,5 @@ make
 make install
 
 # debian build 
-dpkg-buildpakage -b -us -uc
+dpkg-buildpackage -b -us -uc
 
