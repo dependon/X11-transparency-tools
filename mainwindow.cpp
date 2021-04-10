@@ -2,9 +2,6 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
-
-#include "setdesktop.h"
-
 #include <QTimer>
 #include <QThread>
 #include <QMutexLocker>
@@ -14,6 +11,7 @@
 #include <QCloseEvent>
 #include <QDesktopWidget>
 
+#include "setdesktop.h"
 #define App (static_cast<QApplication*>(QCoreApplication::instance()))
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -25,11 +23,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusBar->showMessage("https://github.com/dependon/x11opacitytool");
 //    initTray();
     initXcb();
+    initNoopacity();
     QTimer::singleShot(100, [ = ] {
         setAllWindows();
     });
 
-    this->setMaximumSize(600, 150);
+    this->setFixedSize(600, 150);
     this->move(App->desktop()->screen()->rect().center() - this->rect().center());
     m_eventThread = QThread::create([ = ]() {
         Display *display;
@@ -47,11 +46,12 @@ MainWindow::MainWindow(QWidget *parent) :
                 if (m_bFisrt) {
                     m_myId = id;
                     m_bFisrt = false;
+                    m_noOpacityId.push_back(id);
                 }
                 QWindow *window = QWindow::fromWinId((unsigned long)id);
                 uint32_t indexId = searchWindowType(id) ;
                 qDebug() << indexId;
-                if (window != nullptr && m_myId != id
+                if (window != nullptr && !m_noOpacityId.contains(id)
                         && (indexId == 381 || indexId == 377 || indexId == 371
                             || indexId == 376 || indexId == 192266373 ||
                             indexId == 10809947 || indexId == 344672356)) {
@@ -113,6 +113,23 @@ void MainWindow::initXcb()
     xcb_ewmh_init_atoms_replies(&m_ewmh_connection, m_cookie, NULL);
 }
 
+void MainWindow::initNoopacity()
+{
+    QList<Window> list1= searchWindowid("dde-dock");
+    for(Window wid:list1 ){
+        m_noOpacityId.push_back(wid);
+    }
+
+    QList<Window> list2= searchWindowid("dde-desktop");
+    for(Window wid:list2){
+        m_noOpacityId.push_back(wid);
+    }
+    QList<Window> list3= searchWindowid("dde-launcher");
+    for(Window wid:list3){
+        m_noOpacityId.push_back(wid);
+    }
+}
+
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     this->hide();
@@ -143,16 +160,22 @@ void MainWindow::setAllWindows()
     for (Window id : allresult) {
         QWindow *window = QWindow::fromWinId((unsigned long)id);
         uint32_t indexId = searchWindowType(id) ;
+
         qDebug() << indexId;
-        if (window != nullptr && m_myId != id
-                && (indexId == 381 || indexId == 377 || indexId == 371
-                    || indexId == 376 || indexId == 192266373)) {
+//        indexId =  381;
+//        if (window != nullptr && m_myId != id
+//                && (indexId == 381 || indexId == 377 || indexId == 371
+//                    || indexId == 376 || indexId == 192266373||
+//                    indexId == 10809947 || indexId == 344672356)) {
+        if (window != nullptr && !m_noOpacityId.contains(id)
+                && (indexId != 373 || indexId == 374 )) {
 
             int value = ui->opacitySlider->value();
             double a = (double)value;
             double o = a / 100.0;
             window->setOpacity(o);
-
+            static int i=0;
+            qDebug()<<"ok" <<i++;
             strucWindow st;
             st.window = window;
             st.wid = id;
@@ -215,12 +238,38 @@ uint32_t MainWindow::searchWindowType(int wid)
 
         }
         qDebug() << "eeee";
-        if (name.atoms && name.atoms_len == 1) {
+        if (name.atoms && name.atoms_len <= 10) {
             reId = name.atoms[0];
         }
 
     }
     return reId;
+}
+
+QList<unsigned long> MainWindow::searchWindowid(const QString &name)
+{
+    QList<Window> wlist;
+    qDebug() << "xxx1";
+    char *str = NULL;
+    QByteArray ba=name.toLatin1();
+    str = (char *)malloc(ba.length() + 1);
+    memset(str, 0, ba.length());
+    memcpy(str, ba.data(), ba.length());
+    qDebug() << "xxxx2";
+    str[ba.length()] = '\0';
+    //设置desktop透明
+    int pid_t[128];
+    find_pid_by_name(str, pid_t);
+    int pid = pid_t[0];
+
+    qDebug() << "xxxx3";
+    Display *display = XOpenDisplay(0);
+    WindowsMatchingPid match(display, XDefaultRootWindow(display), pid);
+    const list<Window> &result = match.result();
+    for(Window id:result){
+        wlist.push_back(id);
+    }
+    return wlist;
 }
 
 void MainWindow::quitApp()
@@ -278,4 +327,56 @@ void MainWindow::on_opacitySlider_sliderReleased()
     double o = a / 100.0;
     setAllWindowsOpacity(o);
     qDebug() << "xxx";
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+
+    qDebug() << "xxx1";
+    char *str = NULL;
+    QByteArray ba = "";
+    str = (char *)malloc(ba.length() + 1);
+    memset(str, 0, ba.length());
+    memcpy(str, ba.data(), ba.length());
+    qDebug() << "xxxx2";
+    str[ba.length()] = '\0';
+    //设置desktop透明
+    int pid_t[128];
+    find_pid_by_name(str, pid_t);
+    int pid = pid_t[0];
+
+    qDebug() << "xxxx3";
+    Display *display = XOpenDisplay(0);
+    WindowsMatchingPid match(display, XDefaultRootWindow(display), pid);
+    const list<Window> &result = match.result();
+//    const list<Window> &allresult = match.Allresult();
+    qDebug() << "xxxx4";
+    for (Window id : result) {
+        QWindow *window = QWindow::fromWinId((unsigned long)id);
+        uint32_t indexId = searchWindowType(id) ;
+
+        qDebug() << indexId;
+//        indexId =  381;
+//        if (window != nullptr && m_myId != id
+//                && (indexId == 381 || indexId == 377 || indexId == 371
+//                    || indexId == 376 || indexId == 192266373||
+//                    indexId == 10809947 || indexId == 344672356)) {
+            if (window != nullptr /*&& !m_noOpacityId.contains(id)
+                    && (indexId != 373 || indexId == 374 )*/) {
+
+            int value = ui->opacitySlider->value();
+            double a = (double)value;
+            double o = a / 100.0;
+            window->setOpacity(0.99);
+            static int i=0;
+            qDebug()<<"ok" <<i++;
+            strucWindow st;
+            st.window = window;
+            st.wid = id;
+            st.name = "name";
+            st.opacity = o;
+            m_windowVec.insert(id, st);
+
+        }
+    }
 }

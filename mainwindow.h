@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+
 #include <QMap>
 #include <QWindow>
 #include <QMutex>
@@ -10,6 +11,8 @@
 #include <xcb/xcb_ewmh.h>
 #include <QtX11Extras/QX11Info>
 #include <QCloseEvent>
+
+
 class QSystemTrayIcon;
 class QThread;
 struct strucWindow {
@@ -36,8 +39,10 @@ public:
     void searchAllWindowType();
     uint32_t searchWindowType(int wid);
 
+    QList<unsigned long> searchWindowid(const QString &name);
     void initTray();
     void initXcb();
+    void initNoopacity();
 
     void closeEvent(QCloseEvent *event);
 private slots:
@@ -45,6 +50,8 @@ private slots:
     void quitApp();
 
     void on_opacitySlider_sliderReleased();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -59,6 +66,8 @@ private:
     bool m_bFisrt = true;
     QSystemTrayIcon *m_trayIcon{nullptr};
     QMenu *m_traymenu{nullptr};
+
+    QList <unsigned long> m_noOpacityId;
 };
 
 #endif // MAINWINDOW_H
