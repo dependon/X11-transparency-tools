@@ -22,3 +22,5 @@ make install
 # debian build 
 dpkg-buildpackage -b -us -uc
 
+# csdn
+https://blog.csdn.net/qq_43081702/article/details/115678100
