@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>install/window.svg</file>
+        <file>install/x11-transparency-tools.svg</file>
     </qresource>
 </RCC>

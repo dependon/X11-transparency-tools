@@ -1,0 +1,15 @@
+[Desktop Entry]
+Categories=x11-transparency-tools;
+Comment=x11-transparency-tools
+Comment[zh_CN]=linux窗口透明工具
+Encoding=UTF-8
+Exec=x11-transparency-tools
+GenericName=x11-transparency-tools
+GenericName[zh_CN]=linux窗口透明工具
+Icon=x11-transparency-tools
+Name=x11-transparency-tools
+Name[zh_CN]=linux窗口透明工具
+StartupNotify=false
+Terminal=false
+Type=Application
+Version=1.0.0.0

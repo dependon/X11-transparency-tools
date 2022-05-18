@@ -9,7 +9,7 @@ QT       += core gui x11extras
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11 link_pkgconfig
 PKGCONFIG += xcb-ewmh x11
-TARGET = x11opacity-tool
+TARGET = x11-transparency-tools
 TEMPLATE = app
 QT_DEVICE_PIXEL_RATIO=1
 # The following define makes your compiler emit warnings if you use
@@ -39,16 +39,15 @@ FORMS += \
         mainwindow.ui
 
 # Default rules for deployment.
-qnx: target.path = /opt/durapps/x11opacity-tool/
-else: unix:!android: target.path = /opt/durapps/x11opacity-tool/
+target.path = /usr/bin
 
 desktop.path = /usr/share/applications/
-desktop.files = $$PWD/install/x11opacity-tool.desktop
+desktop.files = $$PWD/install/x11-transparency-tools.desktop
 
-other.path=/opt/durapps/x11opacity-tool
-other.files= $$PWD/install/*
+icon.path= /usr/share/icons
+icon.files= $$PWD/install/x11-transparency-tools.svg
 
-!isEmpty(target.path): INSTALLS += target desktop other
+!isEmpty(target.path): INSTALLS += target desktop icon
 
 INSTALLS +=
 RESOURCES += \
