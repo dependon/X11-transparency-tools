@@ -39,15 +39,18 @@ FORMS += \
         mainwindow.ui
 
 # Default rules for deployment.
-target.path = /usr/bin
+target.path = /opt/apps/com.github.x11-transparency-tools/files/bin/
 
-desktop.path = /usr/share/applications/
-desktop.files = $$PWD/install/x11-transparency-tools.desktop
+desktop.path = /opt/apps/com.github.x11-transparency-tools/entries/applications
+desktop.files = $$PWD/install/com.github.x11-transparency-tools.desktop
 
-icon.path= /usr/share/icons
+icon.path= /opt/apps/com.github.x11-transparency-tools/entries/icons
 icon.files= $$PWD/install/x11-transparency-tools.svg
 
-!isEmpty(target.path): INSTALLS += target desktop icon
+info.path=/opt/apps/com.github.x11-transparency-tools/
+info.files= $$PWD/info/info
+
+!isEmpty(target.path): INSTALLS += target desktop icon info
 
 INSTALLS +=
 RESOURCES += \

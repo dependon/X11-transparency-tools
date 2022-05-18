@@ -1,4 +1,4 @@
-x11-transparency-tools (1.0.0-4) unstable; urgency=low
+com.github.x11-transparency-tools (1.0.1) unstable; urgency=low
 
   * Initial release.
 
