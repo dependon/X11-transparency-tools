@@ -9,7 +9,7 @@
 #include <QCoreApplication>
 #include <QApplication>
 #include <QCloseEvent>
-#include <QDesktopWidget>
+#include <QScreen>
 
 #include "setdesktop.h"
 #define App (static_cast<QApplication*>(QCoreApplication::instance()))
@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     this->setFixedSize(600, 150);
-    this->move(App->desktop()->screen()->rect().center() - this->rect().center());
+    this->move(QGuiApplication::primaryScreen()->geometry().center() - this->rect().center());
     m_eventThread = QThread::create([ = ]() {
         Display *display;
         Window rootwin;
