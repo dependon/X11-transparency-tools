@@ -20,8 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowTitle(tr("X11OpacityTool"));
-    ui->statusBar->showMessage("https://github.com/dependon/x11opacitytool");
-//    initTray();
+    ui->statusBar->showMessage("https://github.com/dependon/X11-transparency-tools.git");
     initXcb();
     initNoopacity();
     QTimer::singleShot(100, [ = ] {
@@ -273,41 +272,6 @@ QList<unsigned long> MainWindow::searchWindowid(const QString &name)
 void MainWindow::quitApp()
 {
     App->quit();
-}
-void MainWindow::initTray()
-{
-    m_traymenu = new QMenu();
-    QAction *exitAction = new QAction(m_traymenu);
-    exitAction->setText("退出");
-    connect(exitAction, &QAction::triggered, this, &MainWindow::quitApp);
-    QAction *setShowAction = new QAction(m_traymenu);
-    setShowAction->setText("显示");
-    connect(setShowAction, &QAction::triggered, this, [ = ] {
-        this->show();
-        this->activateWindow();
-    });
-
-    QAction *setHideAction = new QAction(m_traymenu);
-    setHideAction->setText("隐藏");
-    connect(setHideAction, &QAction::triggered, this, [ = ] {
-        this->hide();
-    });
-
-    m_traymenu->addAction(setShowAction);
-    m_traymenu->addAction(setHideAction);
-    m_traymenu->addAction(exitAction);
-
-    m_trayIcon = new QSystemTrayIcon(this);
-    m_trayIcon->setContextMenu(m_traymenu);
-    m_trayIcon->setToolTip("双击打开界面");
-    m_trayIcon->show();
-
-    connect(m_trayIcon, &QSystemTrayIcon::activated, this, [ = ](QSystemTrayIcon::ActivationReason reason) {
-        if (QSystemTrayIcon::Trigger == reason) {
-            this->show();
-            this->activateWindow();
-        }
-    });
 }
 
 void MainWindow::on_setBtn_clicked()
