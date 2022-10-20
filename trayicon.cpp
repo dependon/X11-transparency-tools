@@ -23,7 +23,7 @@ TrayIcon::TrayIcon(QObject *parent)
     QAction *setHideAction = new QAction(m_traymenu);
     setHideAction->setText("隐藏");
     connect(setHideAction, &QAction::triggered, this, [ = ] {
-        this->hide();
+        m_window->hide();
     });
 
     m_traymenu->addAction(setShowAction);
