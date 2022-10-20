@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowTitle(tr("X11OpacityTool"));
-    ui->statusBar->showMessage("https://github.com/dependon/x11opacitytool");
+    ui->statusBar->showMessage("https://github.com/dependon/X11-transparency-tools.git");
     initXcb();
     initNoopacity();
     QTimer::singleShot(100, [ = ] {
