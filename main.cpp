@@ -16,7 +16,7 @@ bool checkOnly()
     std::string path = ("/home/" + userName + "/.config/x11opacity-tool/").toStdString();
     QDir tdir(path.c_str());
     if (!tdir.exists()) {
-        bool ret =  tdir.mkpath(path.c_str());
+        tdir.mkpath(path.c_str());
     }
 
     path += "single";
