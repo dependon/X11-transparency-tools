@@ -4,9 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui x11extras
+QT       += core gui x11extras widgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11 link_pkgconfig
 PKGCONFIG += xcb-ewmh x11
 TARGET = x11-transparency-tools
