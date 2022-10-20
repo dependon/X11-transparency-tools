@@ -40,7 +40,7 @@ TrayIcon::TrayIcon(QObject *parent)
 
     m_window->show();
 
-    setIcon(QIcon("/usr/share/icons/x11-transparency-tools.svg"));
+    setIcon(QIcon(":/install/x11-transparency-tools.svg"));
 }
 TrayIcon::~TrayIcon()
 {
