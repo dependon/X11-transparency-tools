@@ -91,8 +91,6 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     });
     m_eventThread->start();
-
-    ui->setBtn->hide();
 }
 
 MainWindow::~MainWindow()
@@ -274,71 +272,10 @@ void MainWindow::quitApp()
     App->quit();
 }
 
-void MainWindow::on_setBtn_clicked()
+void MainWindow::on_opacitySlider_valueChanged(int value)
 {
-    int value = ui->opacitySlider->value();
-    double a = (double)value;
-    double o = a / 100.0;
-    setAllWindowsOpacity(o);
-}
-
-void MainWindow::on_opacitySlider_sliderReleased()
-{
-    int value = ui->opacitySlider->value();
     double a = (double)value;
     double o = a / 100.0;
     setAllWindowsOpacity(o);
     qDebug() << "xxx";
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-
-    qDebug() << "xxx1";
-    char *str = NULL;
-    QByteArray ba = "";
-    str = (char *)malloc(ba.length() + 1);
-    memset(str, 0, ba.length());
-    memcpy(str, ba.data(), ba.length());
-    qDebug() << "xxxx2";
-    str[ba.length()] = '\0';
-    //设置desktop透明
-    int pid_t[128];
-    find_pid_by_name(str, pid_t);
-    int pid = pid_t[0];
-
-    qDebug() << "xxxx3";
-    Display *display = XOpenDisplay(0);
-    WindowsMatchingPid match(display, XDefaultRootWindow(display), pid);
-    const list<Window> &result = match.result();
-//    const list<Window> &allresult = match.Allresult();
-    qDebug() << "xxxx4";
-    for (Window id : result) {
-        QWindow *window = QWindow::fromWinId((unsigned long)id);
-        uint32_t indexId = searchWindowType(id) ;
-
-        qDebug() << indexId;
-//        indexId =  381;
-//        if (window != nullptr && m_myId != id
-//                && (indexId == 381 || indexId == 377 || indexId == 371
-//                    || indexId == 376 || indexId == 192266373||
-//                    indexId == 10809947 || indexId == 344672356)) {
-        if (window != nullptr /*&& !m_noOpacityId.contains(id)
-                    && (indexId != 373 || indexId == 374 )*/) {
-
-            int value = ui->opacitySlider->value();
-            double a = (double)value;
-            double o = a / 100.0;
-            window->setOpacity(0.99);
-            static int i = 0;
-            qDebug() << "ok" << i++;
-            strucWindow st;
-            st.window = window;
-            st.wid = id;
-            st.name = "name";
-            st.opacity = o;
-            m_windowVec.insert(id, st);
-
-        }
-    }
 }

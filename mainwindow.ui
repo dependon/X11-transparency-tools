@@ -25,13 +25,6 @@
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QPushButton" name="setBtn">
-      <property name="text">
-       <string>set</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
