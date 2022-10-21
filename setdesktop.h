@@ -84,8 +84,8 @@ class WindowsMatchingPid
 {
 public:
     WindowsMatchingPid(Display *display, Window wRoot, unsigned long pid)
-        : _display(display)
-        , _pid(pid)
+        : _pid(pid)
+        , _display(display)
     {
         // Get the PID property atom.
         _atomPID = XInternAtom(display, "_NET_WM_PID", True);
