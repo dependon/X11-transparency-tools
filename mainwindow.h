@@ -49,7 +49,7 @@ private slots:
     void on_setBtn_clicked();
     void quitApp();
 
-    void on_opacitySlider_sliderReleased();
+    void on_opacitySlider_valueChanged(int);
 
     void on_pushButton_clicked();
 

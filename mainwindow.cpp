@@ -282,9 +282,8 @@ void MainWindow::on_setBtn_clicked()
     setAllWindowsOpacity(o);
 }
 
-void MainWindow::on_opacitySlider_sliderReleased()
+void MainWindow::on_opacitySlider_valueChanged(int value)
 {
-    int value = ui->opacitySlider->value();
     double a = (double)value;
     double o = a / 100.0;
     setAllWindowsOpacity(o);
